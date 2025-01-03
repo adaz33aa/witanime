@@ -18,15 +18,13 @@ class WitanimeProvider : MainAPI() {
     override val hasDownloadSupport = true
     override val supportedTypes = setOf(
         TvType.Anime,
-        TvType.Movie,
-        TvType.TvSeries
+        TvType.Movie
     )
 
     override val mainPage = mainPageOf(
         "$mainUrl/" to "Home",
         "$mainUrl/anime/" to "Anime",
-        "$mainUrl/movies/" to "Movies",
-        "$mainUrl/tv/" to "TV Shows"
+        "$mainUrl/movies/" to "Movies"
     )
 
     override suspend fun getMainPage(
@@ -76,9 +74,7 @@ class WitanimeProvider : MainAPI() {
         val title = document.selectFirst("h1.anime-title")?.text().toString()
         val posterUrl = document.selectFirst("img.anime-thumbnail")?.attr("src").toString()
         val description = document.selectFirst("div.anime-description")?.text().toString()
-        val tvtype = if(url.contains("/tv/")) {
-            TvType.TvSeries
-        } else if (url.contains("/movies/")) {
+        val tvtype = if (url.contains("/movies/")) {
             TvType.Movie
         } else {
             TvType.Anime
